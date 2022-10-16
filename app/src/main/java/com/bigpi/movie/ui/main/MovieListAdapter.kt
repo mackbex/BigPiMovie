@@ -41,6 +41,7 @@ class MovieListAdapter: PagingDataAdapter<MoviePresentation, RecyclerView.ViewHo
         this.listener = listener
     }
 
+
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
         MovieModelViewHolder(binding) {
 

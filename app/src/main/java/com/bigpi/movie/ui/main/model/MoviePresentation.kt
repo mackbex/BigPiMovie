@@ -9,5 +9,5 @@ sealed class MoviePresentation(val ordinal: Int) {
     }
 
     object SeparatorItem : MoviePresentation(Type.SeparatorItem.ordinal)
-    data class MovieItem(val movie: Movie) : MoviePresentation(Type.MovieItem.ordinal)
+    data class MovieItem(var movie: Movie) : MoviePresentation(Type.MovieItem.ordinal)
 }

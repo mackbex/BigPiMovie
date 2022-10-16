@@ -14,9 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.insertSeparators
-import androidx.paging.map
 import androidx.recyclerview.widget.ConcatAdapter
 import com.bigpi.movie.R
 import com.bigpi.movie.data.model.remote.mapToData
@@ -25,7 +22,6 @@ import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.Movie
 import com.bigpi.movie.ext.loadFooter
 import com.bigpi.movie.ui.detail.DetailFragmentArgs
-import com.bigpi.movie.ui.main.model.MoviePresentation
 import com.bigpi.movie.util.autoCleared
 import com.bigpi.movie.util.hideSoftInput
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +46,9 @@ class MovieFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@MovieFragment.viewModel
             fragment = this@MovieFragment
-            rcMovies.adapter = getPagingAdapter()
+            rcMovies.apply {
+                adapter = getPagingAdapter()
+            }
         }
 
         initObservers()
@@ -63,13 +61,13 @@ class MovieFragment : Fragment() {
         movieListAdapter.refresh()
     }
 
+
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.searchMovieState.collect { pagingData ->
-                        val mappedPagingData = addSeparator(pagingData)
-                        movieListAdapter.submitData(viewLifecycleOwner.lifecycle, mappedPagingData)
+                        movieListAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
                     }
                 }
                 launch {
@@ -123,9 +121,13 @@ class MovieFragment : Fragment() {
 
     val actionMovieSearch = TextView.OnEditorActionListener { _, actionId, _ ->
         if(actionId == EditorInfo.IME_ACTION_SEARCH) {
-            viewModel.scrollResetRequired.set(true)
-            this@MovieFragment.viewModel.searchMovie(binding.etSearch.text?.toString() ?: kotlin.run { "" })
-            binding.etSearch.hideSoftInput()
+            binding.etSearch.text?.toString()?.let { query ->
+                viewModel.scrollResetRequired.set(true)
+                this@MovieFragment.viewModel.searchMovie(query)
+                binding.etSearch.hideSoftInput()
+            } ?: run {
+                Toast.makeText(requireContext(), R.string.err_input_data, Toast.LENGTH_SHORT).show()
+            }
         }
         return@OnEditorActionListener false
     }
@@ -139,19 +141,4 @@ class MovieFragment : Fragment() {
         )
     }
 
-    private fun addSeparator(pagingData: PagingData<Movie>): PagingData<MoviePresentation> {
-        return pagingData
-            .map<Movie, MoviePresentation> { data ->
-                MoviePresentation.MovieItem(data)
-            }
-            .insertSeparators { before: MoviePresentation?, after: MoviePresentation? ->
-                if(before == null) {
-                    return@insertSeparators null
-                }
-                if (after == null) {
-                    return@insertSeparators null
-                }
-                return@insertSeparators MoviePresentation.SeparatorItem
-            }
-    }
 }

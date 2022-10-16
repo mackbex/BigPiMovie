@@ -19,7 +19,7 @@ class MoviePagingSource @Inject constructor(
 
     companion object {
         const val START_INDEX = 1
-        const val PAGE_SIZE = 25
+        const val PAGE_SIZE = 50
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
