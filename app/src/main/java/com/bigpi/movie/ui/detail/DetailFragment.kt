@@ -6,20 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.bigpi.movie.data.model.remote.mapToData
 import com.bigpi.movie.databinding.FragmentDetailBinding
 import com.bigpi.movie.domain.Resource
-import com.bigpi.movie.util.KEY_MOVIE_BOOKMARK
-import com.bigpi.movie.util.KEY_MOVIE_ITEM
 import com.bigpi.movie.util.autoCleared
 import com.bigpi.movie.util.setOnBackPressHandler
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +30,7 @@ class DetailFragment : Fragment() {
         super.onAttach(context)
 
         setOnBackPressHandler {
-            setFragmentResult()
+            findNavController().navigateUp()
         }
     }
 
@@ -49,7 +43,6 @@ class DetailFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@DetailFragment.viewModel
             toolbar.setNavigationOnClickListener {
-                setFragmentResult()
                 findNavController().navigateUp()
             }
         }
@@ -59,11 +52,6 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
-    fun setFragmentResult() {
-        setFragmentResult(
-            KEY_MOVIE_BOOKMARK, bundleOf(KEY_MOVIE_ITEM to this@DetailFragment.viewModel.movieState.value?.mapToData())
-        )
-    }
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
