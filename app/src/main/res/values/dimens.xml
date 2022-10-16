@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- margin -->
+    <dimen name="margin_10">10dp</dimen>
+    
+    <!-- padding -->
+    <dimen name="padding_0">0dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+
+    <!-- width -->
+    <dimen name="width_80">80dp</dimen>
+
+    <!-- height -->
+    <dimen name="height_0_dot_5">0.5dp</dimen>
+    <dimen name="height_1">1dp</dimen>
+    <dimen name="height_110">110dp</dimen>
+
+</resources>

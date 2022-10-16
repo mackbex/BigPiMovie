@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.BigPi" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/grey_04</item>
+        <item name="colorPrimaryVariant">@color/grey_03</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/spoqa_han_sans_neo_medium</item>
+    </style>
+
+    <style name="Theme.BigPi.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.BigPi.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.BigPi.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="FragmentScenarioEmptyFragmentActivityTheme" parent="android:Theme.WithActionBar">
+        <item name="android:windowIsFloating">false</item>
+    </style>
+</resources>

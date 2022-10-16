@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.278" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.281" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/activity_main.xml" value="0.3433091064557503" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/fragment_detail.xml" value="0.5" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/fragment_movie.xml" value="0.16908431550317315" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/fragment_ranking.xml" value="0.3433091064557503" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/item_movie.xml" value="0.33" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/item_separator.xml" value="0.14" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/item_user_profiles.xml" value="0.3433091064557503" />
+        <entry key="..\:/Android/BigPiMovie/app/src/main/res/layout/layout_network_paging_state.xml" value="0.2377084224027362" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/bg_gradition.xml" value="0.2495" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/bg_my_rank.xml" value="0.3095" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/bg_profile.xml" value="0.3095" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2395" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/ic_wippy_common_back_btn_off.xml" value="0.2205" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/ic_wippy_ranking_arrow_down_icon.xml" value="0.226" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/ic_wippy_ranking_arrow_up_icon.xml" value="0.226" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/drawable/wave_bottom.xml" value="0.3095" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/activity_main.xml" value="0.19275582573454914" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/content_main.xml" value="0.3867753623188406" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/fragment_first.xml" value="0.25769927536231885" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/fragment_ranking.xml" value="0.14" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/fragment_second.xml" value="0.24094202898550723" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/include_profile.xml" value="0.33632478632478635" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/include_ranking.xml" value="0.5" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/include_ranking_profile.xml" value="0.22" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/include_user_profile.xml" value="0.2830269345874305" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/include_user_profile_me.xml" value="0.28388200085506626" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/layout/item_user_profiles.xml" value="0.5160905840286055" />
+        <entry key="..\:/Android/WippyRanking/app/src/main/res/menu/menu_profile.xml" value="0.25609234715690465" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.14" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

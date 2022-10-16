@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BigPiMovie</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="title_movie_search">네이버 영화 검색</string>
+    <string name="hint_search_movie">검색할 영화 제목을 입력하세요.</string>
+    <string name="title_movie">감독 : %s</string>
+    <string name="title_actor">출연 : %s</string>
+    <string name="title_rating">평점 : %s</string>
+    <string name="err_failed_load_data">데이터 로드에 실패했습니다.</string>
+    <string name="btn_retry">Retry</string>
+</resources>

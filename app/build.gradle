@@ -1,0 +1,113 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+    id "kotlin-parcelize"
+    id "kotlin-kapt"
+    id "com.google.dagger.hilt.android"
+    id "androidx.navigation.safeargs.kotlin"
+}
+
+android {
+    compileSdk libs.versions.compileSdk.get().toInteger()
+
+    defaultConfig {
+        applicationId "com.bigpi.movie"
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "com.bigpi.movie.CustomTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
+}
+
+dependencies {
+    implementation libs.core.ktx
+    implementation libs.androix.appcompat
+    implementation libs.android.material
+    implementation libs.junit
+    implementation libs.androix.junit
+    implementation libs.androix.espresso
+    implementation libs.constraintlayout
+
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
+    implementation libs.navigation.test
+
+    /**
+     * Test
+     */
+    androidTestImplementation libs.bundles.androidTest
+    androidTestImplementation libs.coroutines.test
+    androidTestImplementation libs.androix.espresso
+    androidTestImplementation libs.hilt.test
+    androidTestImplementation libs.fragment.test
+    kaptAndroidTest libs.hilt.compiler
+    testImplementation libs.coroutines.test
+    implementation libs.espresso.contrib
+    androidTestImplementation libs.mockk.android
+    /**
+     * Hilt
+     */
+    implementation libs.hilt
+    kapt libs.hilt.compiler
+
+    /**
+     * Navigation Component
+     */
+    implementation libs.bundles.navigationComponent
+
+    /**
+     * Glide
+     */
+    implementation libs.glide
+    annotationProcessor libs.glide.compiler
+
+    /**
+     * Gson
+     */
+    implementation libs.google.gson
+
+    /**
+     * retrofit
+     */
+    implementation libs.bundles.retrofit
+
+    /**
+     * okHttp
+     */
+    implementation libs.bundles.okHttp
+
+    /**
+     * Paging3
+     */
+    implementation libs.paging3
+
+}
+
+
+kapt {
+    correctErrorTypes = true
+}

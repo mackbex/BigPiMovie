@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/MovieFragment">
+
+    <fragment
+        android:id="@+id/MovieFragment"
+        android:name="com.bigpi.movie.ui.main.MovieFragment"
+        tools:layout="@layout/fragment_movie">
+
+        <action
+            android:id="@+id/toDetailFragment"
+            app:destination="@id/DetailFragment">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/DetailFragment"
+        android:name="com.bigpi.movie.ui.detail.DetailFragment"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="movie"
+            app:argType="com.bigpi.movie.data.model.remote.MovieResponse" />
+    </fragment>
+</navigation>
