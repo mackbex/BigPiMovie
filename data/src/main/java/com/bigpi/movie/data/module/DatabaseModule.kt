@@ -2,7 +2,7 @@ package com.bigpi.movie.data.module
 
 import android.content.Context
 import com.bigpi.movie.data.source.local.AppDatabase
-import com.bigpi.movie.data.source.local.dao.BookmarkDao
+import com.bigpi.movie.data.source.local.dao.MovieDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +22,9 @@ object DatabaseModule {
         return AppDatabase.getInstance(context)
     }
 
+    @Singleton
     @Provides
-    fun provideBookmarkDao(appDatabase: AppDatabase): BookmarkDao {
+    fun provideBookmarkDao(appDatabase: AppDatabase): MovieDao {
         return appDatabase.bookmarkDao()
     }
 }

@@ -9,7 +9,7 @@ import androidx.paging.map
 import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.Movie
 import com.bigpi.movie.domain.usecase.SearchMovieUseCase
-import com.bigpi.movie.domain.usecase.UpdateBookmarkUseCase
+//import com.bigpi.movie.domain.usecase.UpdateBookmarkUseCase
 import com.bigpi.movie.ui.main.model.MoviePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieViewModel @Inject constructor(
     private val searchMovieUseCase: SearchMovieUseCase,
-    private val updateBookmarkUseCase: UpdateBookmarkUseCase
+//    private val updateBookmarkUseCase: UpdateBookmarkUseCase
 ) : ViewModel() {
 
     private val _searchMovieState = MutableStateFlow<PagingData<MoviePresentation>>(PagingData.empty())
@@ -46,7 +46,7 @@ class MovieViewModel @Inject constructor(
 
     fun updateBookmark(movie: Movie) {
         viewModelScope.launch {
-            _bookmarkState.emit(updateBookmarkUseCase.invoke(movie))
+//            _bookmarkState.emit(updateBookmarkUseCase.invoke(movie))
         }
     }
 

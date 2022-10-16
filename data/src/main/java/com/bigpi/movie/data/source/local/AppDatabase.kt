@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.bigpi.movie.data.model.local.BookmarkEntity
+import com.bigpi.movie.data.model.local.MovieEntity
 import com.bigpi.movie.data.module.DATABASE_NAME
-import com.bigpi.movie.data.source.local.dao.BookmarkDao
+import com.bigpi.movie.data.source.local.dao.MovieDao
 
-@Database(entities = [BookmarkEntity::class], version = 1)
+@Database(entities = [MovieEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun bookmarkDao(): BookmarkDao
+    abstract fun bookmarkDao(): MovieDao
 
     companion object{
 

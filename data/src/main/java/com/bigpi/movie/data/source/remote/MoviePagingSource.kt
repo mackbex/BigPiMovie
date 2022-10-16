@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.bigpi.movie.data.map
 import com.bigpi.movie.data.model.remote.mapToDomain
-import com.bigpi.movie.data.source.local.BookmarkDataSource
+import com.bigpi.movie.data.source.local.MovieLocalDataSource
 import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.Movie
 import java.io.IOException
@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 
 class MoviePagingSource @Inject constructor(
-    private val movieDataSource: MovieDataSource,
-    private val bookmarkDataSource: BookmarkDataSource,
+    private val movieDataSource: MovieRemoteDataSource,
+    private val bookmarkDataSource: MovieLocalDataSource,
     private val query: String
 ) : PagingSource<Int, Movie>() {
 
@@ -34,7 +34,8 @@ class MoviePagingSource @Inject constructor(
             var movieList = listOf<Movie>()
             val nextKey = when (movies) {
                 is Resource.Success -> {
-                    movieList = checkBookmark(movies.data.movieList.toMutableList())
+//                    movieList = checkBookmark(movies.data.movieList.toMutableList())
+                    movieList = movies.data.movieList
 
                     if(movies.data.movieList.size >= PAGE_SIZE) {
                         position + PAGE_SIZE
@@ -70,15 +71,15 @@ class MoviePagingSource @Inject constructor(
         }
     }
 
-    private suspend fun checkBookmark(list:MutableList<Movie>): List<Movie> {
-        if(list.isEmpty()) return list
-        val bookmarkList = bookmarkDataSource.getBookmarksById(list.mapNotNull { it.link })
-        list.forEachIndexed { index, movie ->
-            if(bookmarkList.contains(movie.link)) {
-                list[index] = movie.copy(bookmark = true)
-            }
-        }
-
-        return list
-    }
+//    private suspend fun checkBookmark(list:MutableList<Movie>): List<Movie> {
+//        if(list.isEmpty()) return list
+//        val bookmarkList = bookmarkDataSource.getMovieById(list.mapNotNull { it.link })
+//        list.forEachIndexed { index, movie ->
+//            if(bookmarkList.contains(movie.link)) {
+//                list[index] = movie.copy(bookmark = true)
+//            }
+//        }
+//
+//        return list
+//    }
 }

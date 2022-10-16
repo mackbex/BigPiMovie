@@ -1,6 +1,7 @@
 package com.bigpi.movie.data.model.remote
 
 import android.os.Parcelable
+import com.bigpi.movie.data.model.local.MovieEntity
 import com.bigpi.movie.domain.model.remote.Movie
 import com.bigpi.movie.domain.model.remote.MovieList
 import com.google.gson.annotations.SerializedName
@@ -12,6 +13,7 @@ data class MovieListResponse(
 
 @Parcelize
 data class MovieResponse(
+    val id: Int? = null,
     @SerializedName("title") val title: String? = null,
     @SerializedName("link") val link: String? = null,
     @SerializedName("image") val image: String? = null,
@@ -45,6 +47,21 @@ fun MovieResponse.mapToDomain(): Movie {
 
 fun Movie.mapToData(): MovieResponse {
     return MovieResponse(
+        title = this.title,
+        link = this.link,
+        image = this.image,
+        subtitle = this.subtitle,
+        pubDate = this.pubDate,
+        director = this.director,
+        actor = this.actor,
+        userRating = this.userRating,
+        bookmark = this.bookmark
+    )
+}
+
+fun MovieResponse.mapToEntity(): MovieEntity {
+    return MovieEntity(
+        id = null,
         title = this.title,
         link = this.link,
         image = this.image,
