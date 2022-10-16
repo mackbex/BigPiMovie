@@ -4,16 +4,12 @@ import androidx.paging.*
 import com.bigpi.movie.data.model.local.mapToDomain
 import com.bigpi.movie.data.source.local.MovieLocalDataSource
 import com.bigpi.movie.data.source.local.MovieMediator
+import com.bigpi.movie.data.source.local.MovieMediator.Companion.PAGE_SIZE
 import com.bigpi.movie.data.source.remote.MovieRemoteDataSource
-import com.bigpi.movie.data.source.remote.MoviePagingSource.Companion.PAGE_SIZE
 import com.bigpi.movie.domain.model.remote.Movie
 import com.bigpi.movie.domain.repository.MovieRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -21,13 +17,12 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieLocalDataSource: MovieLocalDataSource,
 ): MovieRepository {
 
-    @OptIn(ExperimentalPagingApi::class)
     override suspend fun getMovieList(query: String): Flow<PagingData<Movie>> {
-
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                enablePlaceholders = false
+                enablePlaceholders = false,
             ),
             remoteMediator = MovieMediator(
                 remoteDataSource = movieRemoteDataSource,
@@ -35,9 +30,10 @@ class MovieRepositoryImpl @Inject constructor(
                 query = query)
         ) {
             movieLocalDataSource.getPagingSource(query)
-        }.flow.map { pagingData ->
-            pagingData.map { it.mapToDomain() }
-        }
+        }.flow
+            .map { pagingData ->
+                pagingData.map { it.mapToDomain() }
+            }
     }
 
 //    override suspend fun addBookmark(id: String): Resource<Long> {

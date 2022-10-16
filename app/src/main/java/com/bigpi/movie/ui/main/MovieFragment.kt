@@ -1,6 +1,7 @@
 package com.bigpi.movie.ui.main
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,10 @@ class MovieFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@MovieFragment.viewModel
             fragment = this@MovieFragment
+            etSearch.apply {
+                setOnKeyListener(searchOnKeyListener)
+                setOnEditorActionListener(searchActionListener)
+            }
             rcMovies.apply {
                 adapter = getPagingAdapter()
             }
@@ -119,17 +124,33 @@ class MovieFragment : Fragment() {
         }.loadFooter()
     }
 
-    val actionMovieSearch = TextView.OnEditorActionListener { _, actionId, _ ->
+    val searchActionListener = TextView.OnEditorActionListener { _, actionId, _ ->
         if(actionId == EditorInfo.IME_ACTION_SEARCH) {
-            binding.etSearch.text?.toString()?.let { query ->
-                viewModel.scrollResetRequired.set(true)
-                this@MovieFragment.viewModel.searchMovie(query)
-                binding.etSearch.hideSoftInput()
-            } ?: run {
-                Toast.makeText(requireContext(), R.string.err_input_data, Toast.LENGTH_SHORT).show()
-            }
+            search()
+            true
         }
-        return@OnEditorActionListener false
+        else {
+            false
+        }
+    }
+
+    val searchOnKeyListener = View.OnKeyListener { _, keyCode, event ->
+        if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            search()
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun search() {
+        binding.etSearch.text?.toString()?.let { query ->
+            viewModel.scrollResetRequired.set(true)
+            this@MovieFragment.viewModel.searchMovie(query)
+            binding.etSearch.hideSoftInput()
+        } ?: run {
+            Toast.makeText(requireContext(), R.string.err_input_data, Toast.LENGTH_SHORT).show()
+        }
     }
 
 

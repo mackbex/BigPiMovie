@@ -3,6 +3,7 @@ package com.bigpi.movie.data.module
 import android.content.Context
 import com.bigpi.movie.data.source.local.AppDatabase
 import com.bigpi.movie.data.source.local.dao.MovieDao
+import com.bigpi.movie.data.source.local.dao.RemoteKeysDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +25,13 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideBookmarkDao(appDatabase: AppDatabase): MovieDao {
-        return appDatabase.bookmarkDao()
+    fun provideMovieDao(appDatabase: AppDatabase): MovieDao {
+        return appDatabase.movieDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRemoteKeysDao(appDatabase: AppDatabase): RemoteKeysDao {
+        return appDatabase.remoteKeysDao()
     }
 }

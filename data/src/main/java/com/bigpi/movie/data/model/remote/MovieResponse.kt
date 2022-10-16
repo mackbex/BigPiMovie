@@ -13,7 +13,7 @@ data class MovieListResponse(
 
 @Parcelize
 data class MovieResponse(
-    val id: Int? = null,
+    val id: String? = null,
     @SerializedName("title") val title: String? = null,
     @SerializedName("link") val link: String? = null,
     @SerializedName("image") val image: String? = null,
@@ -23,7 +23,9 @@ data class MovieResponse(
     @SerializedName("actor") val actor: String? = null,
     @SerializedName("userRating") val userRating: String? = null,
     val bookmark: Boolean = false
-) : Parcelable
+) : Parcelable {
+    fun copy(id: String) = MovieResponse(id, title, link, image, subtitle, pubDate, director, actor, userRating, bookmark)
+}
 
 fun MovieListResponse.mapToDomain(): MovieList {
     return MovieList(
@@ -61,7 +63,7 @@ fun Movie.mapToData(): MovieResponse {
 
 fun MovieResponse.mapToEntity(): MovieEntity {
     return MovieEntity(
-        id = null,
+        id = this.id ?: "",
         title = this.title,
         link = this.link,
         image = this.image,

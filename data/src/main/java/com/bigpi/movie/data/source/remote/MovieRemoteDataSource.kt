@@ -10,7 +10,9 @@ class MovieRemoteDataSource @Inject constructor(
 )  {
     suspend fun searchMovie(
         query: String,
-        display: String,
-        start: String
-    ) = getRemoteResult { movieService.searchMovie(query, display, start) }
+        display: Int,
+        start: Int
+    ) = getRemoteResult {
+        movieService.searchMovie(query, display, start)
+    }
 }

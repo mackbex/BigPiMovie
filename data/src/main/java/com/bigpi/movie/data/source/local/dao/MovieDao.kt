@@ -6,12 +6,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bigpi.movie.data.model.local.MovieEntity
+import com.bigpi.movie.data.model.local.RemoteKeysEntity
 
 @Dao
 interface MovieDao {
 
     @Query("SELECT id FROM movie WHERE id IN (:ids)")
-    suspend fun getMovieByIds(ids: List<Int>): List<Int>
+    suspend fun getMovieByIds(ids: List<String>): List<String>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMovie(movie: MovieEntity): Long
@@ -23,8 +24,10 @@ interface MovieDao {
     fun insertAll(list : List<MovieEntity>)
 
     @Query("DELETE FROM movie")
-    fun deleteAll()
+    fun clearMovies()
 
-    @Query("SELECT * FROM movie WHERE id LIKE :query")
+    @Query("SELECT * FROM movie WHERE title LIKE :query OR subtitle LIKE :query")
     fun pagingSource(query: String): PagingSource<Int, MovieEntity>
+
+
 }

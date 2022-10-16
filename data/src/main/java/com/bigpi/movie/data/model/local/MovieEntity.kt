@@ -6,8 +6,8 @@ import com.bigpi.movie.domain.model.remote.Movie
 
 @Entity(tableName = "movie")
 data class MovieEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long? = null,
+    @PrimaryKey
+    val id: String,
     val title: String? = null,
     val link: String? = null,
     val image: String? = null,
