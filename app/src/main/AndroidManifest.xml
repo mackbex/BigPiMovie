@@ -21,7 +21,6 @@
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.BigPi.NoActionBar"
-            android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity"
             >
             <intent-filter>
