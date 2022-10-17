@@ -21,8 +21,8 @@ class MovieViewModel @Inject constructor(
     private val updateBookmarkUseCase: UpdateBookmarkUseCase
 ) : ViewModel() {
 
-    private val _searchMovieState = MutableSharedFlow<Resource<MoviePresentation.MoviePresent>>()
-    val searchMovieState: SharedFlow<Resource<MoviePresentation.MoviePresent>> = _searchMovieState
+    private val _searchMovieState = MutableStateFlow<Resource<MoviePresentation.MoviePresent>>(Resource.Loading)
+    val searchMovieState: StateFlow<Resource<MoviePresentation.MoviePresent>> = _searchMovieState
 
     private val _bookmarkState = MutableSharedFlow<Resource<MovieItem>>()
     val bookmarkState: SharedFlow<Resource<MovieItem>> = _bookmarkState

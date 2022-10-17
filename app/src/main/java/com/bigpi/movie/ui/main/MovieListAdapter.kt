@@ -97,6 +97,11 @@ class MovieListAdapter: ListAdapter<MoviePresentation, RecyclerView.ViewHolder>(
     }
 
     fun submitMovieItems(movie: MoviePresentation.MoviePresent) {
+        val movieList = movie.movieList
+        if(dataList.containsAll(movieList)) {
+            return
+        }
+
         dataList
             .indexOfFirst {
                 it is MoviePresentation.PagingStatePresent
