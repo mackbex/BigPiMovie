@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +16,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bigpi.movie.databinding.FragmentDetailBinding
 import com.bigpi.movie.domain.Resource
+import com.bigpi.movie.ui.BigPiConstants
+import com.bigpi.movie.ui.main.model.mapper.mapToPresent
 import com.bigpi.movie.util.autoCleared
 import com.bigpi.movie.util.setOnBackPressHandler
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +34,7 @@ class DetailFragment : Fragment() {
         super.onAttach(context)
 
         setOnBackPressHandler {
-            findNavController().navigateUp()
+            onBackPressed()
         }
     }
 
@@ -43,7 +47,7 @@ class DetailFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@DetailFragment.viewModel
             toolbar.setNavigationOnClickListener {
-                findNavController().navigateUp()
+                onBackPressed()
             }
         }
 
@@ -52,6 +56,13 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
+    private fun onBackPressed() {
+        setFragmentResult(
+            BigPiConstants.KEY_DETAIL_MOVIE,
+            bundleOf(BigPiConstants.KEY_MOVIE_ITEM to this@DetailFragment.viewModel.movieState.value?.mapToPresent())
+        )
+        findNavController().navigateUp()
+    }
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {

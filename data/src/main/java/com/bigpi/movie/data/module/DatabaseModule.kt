@@ -24,7 +24,7 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideBookmarkDao(appDatabase: AppDatabase): MovieDao {
-        return appDatabase.bookmarkDao()
+    fun provideMovieDao(appDatabase: AppDatabase): MovieDao {
+        return appDatabase.movieDao()
     }
 }

@@ -10,7 +10,7 @@ import com.bigpi.movie.data.source.local.dao.MovieDao
 
 @Database(entities = [MovieEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun bookmarkDao(): MovieDao
+    abstract fun movieDao(): MovieDao
 
     companion object{
 

@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="movie"
-            type="com.bigpi.movie.domain.model.remote.Movie" />
+            name="movieItem"
+            type="com.bigpi.movie.domain.model.remote.MovieItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             android:layout_width="@dimen/width_80"
             android:layout_height="@dimen/height_110"
             android:scaleType="fitXY"
-            android:src="@{movie.image}"
+            android:src="@{movieItem.image}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_title" />
 
@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_10"
-            android:text="@{movie.title}"
+            android:text="@{movieItem.title}"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
-            android:text="@{@string/title_movie(movie.director)}"
+            android:text="@{@string/title_movie(movieItem.director)}"
             app:layout_constraintEnd_toStartOf="@id/img_bookmark"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
@@ -58,7 +58,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
-            android:text="@{@string/title_actor(movie.actor)}"
+            android:text="@{@string/title_actor(movieItem.actor)}"
             app:layout_constraintEnd_toStartOf="@id/img_bookmark"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_director"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
-            android:text="@{@string/title_rating(movie.userRating)}"
+            android:text="@{@string/title_rating(movieItem.userRating)}"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_cast"
             tools:text="평점 : 0.00" />
@@ -79,7 +79,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@{movie.bookmark ? @drawable/ic_baseline_bookmark_24 : @drawable/ic_baseline_bookmark_border_24 }"
+            android:src="@{movieItem.bookmark ? @drawable/ic_baseline_bookmark_24 : @drawable/ic_baseline_bookmark_border_24 }"
+            tools:src="@drawable/ic_baseline_bookmark_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

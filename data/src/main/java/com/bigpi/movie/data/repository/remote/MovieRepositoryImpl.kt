@@ -1,52 +1,56 @@
 package com.bigpi.movie.data.repository.remote
 
-import androidx.paging.*
-import com.bigpi.movie.data.model.local.mapToDomain
+import com.bigpi.movie.data.map
+import com.bigpi.movie.data.model.mapper.mapToDomain
+import com.bigpi.movie.data.model.mapper.mapToEntity
 import com.bigpi.movie.data.source.local.MovieLocalDataSource
-import com.bigpi.movie.data.source.local.MovieMediator
 import com.bigpi.movie.data.source.remote.MovieRemoteDataSource
-import com.bigpi.movie.data.source.remote.MoviePagingSource.Companion.PAGE_SIZE
+import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.Movie
+import com.bigpi.movie.domain.model.remote.MovieItem
 import com.bigpi.movie.domain.repository.MovieRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-): MovieRepository {
+) : MovieRepository {
 
-    @OptIn(ExperimentalPagingApi::class)
-    override suspend fun getMovieList(query: String): Flow<PagingData<Movie>> {
-
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE,
-                enablePlaceholders = false
-            ),
-            remoteMediator = MovieMediator(
-                remoteDataSource = movieRemoteDataSource,
-                localDataSource = movieLocalDataSource,
-                query = query)
-        ) {
-            movieLocalDataSource.getPagingSource(query)
-        }.flow.map { pagingData ->
-            pagingData.map { it.mapToDomain() }
+    override suspend fun fetchMovie(
+        query: String,
+        display: Int,
+        start: Int
+    ): Resource<Movie> {
+        return movieRemoteDataSource.fetchMovie(query, display, start).map { movieResponse ->
+            movieResponse.mapToDomain()
+                .copy(
+                    checkBookmark(movieResponse
+                        .movieList
+                        .map {
+                            it.mapToDomain()
+                        }
+                        .toMutableList()
+                ))
         }
     }
 
-//    override suspend fun addBookmark(id: String): Resource<Long> {
-//        return bookmarkDataSource.addBookmark(BookmarkEntity(
-//            id = id
-//        ))
-//    }
-//
-//    override suspend fun removeBookmark(id: String): Resource<Int> {
-//        return bookmarkDataSource.removeBookmark(id)
-//    }
+    private suspend fun checkBookmark(list: MutableList<MovieItem>): List<MovieItem> {
+        if (list.isEmpty()) return list
+        val bookmarkList = movieLocalDataSource.getMovieById(list.mapNotNull { it.link })
+        list.forEachIndexed { index, movie ->
+            if (bookmarkList.contains(movie.link)) {
+                list[index] = movie.copy(bookmark = true)
+            }
+        }
+
+        return list
+    }
+
+    override suspend fun addBookmark(movieItem: MovieItem): Resource<Long> {
+        return movieLocalDataSource.addBookmark(movieItem.mapToEntity())
+    }
+
+    override suspend fun removeBookmark(movieItem: MovieItem): Resource<Int> {
+        return movieLocalDataSource.removeBookmark(movieItem.mapToEntity())
+    }
 }

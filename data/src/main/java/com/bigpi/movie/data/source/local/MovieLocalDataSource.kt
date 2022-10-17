@@ -9,23 +9,11 @@ import javax.inject.Inject
 
 
 class MovieLocalDataSource @Inject constructor(
-    private val appDatabase: AppDatabase,
     private val movieDao: MovieDao,
 ){
-    suspend fun getDb() = appDatabase
-
-    suspend fun addMovie(bookmark: MovieEntity) = getInsertResult { movieDao.addMovie(bookmark) }
+    suspend fun addBookmark(movieEntity: MovieEntity) = getInsertResult { movieDao.addBookmark(movieEntity) }
     
-    suspend fun removeMovie(id: String) = getDeleteResult { movieDao.deleteMovieById(id) }
+    suspend fun removeBookmark(movieEntity: MovieEntity) = getDeleteResult { movieDao.removeBookmark(movieEntity.id) }
 
-    suspend fun getMovieById(list: List<Int>): List<Int> {
-        return movieDao.getMovieByIds(list)
-    }
-
-    fun getPagingSource(query: String): PagingSource<Int, MovieEntity> = movieDao.pagingSource(query)
-
-    suspend fun insertAll(list: List<MovieEntity>) = movieDao.insertAll(list)
-
-    suspend fun deleteAll() = movieDao.deleteAll()
-
+    suspend fun getMovieById(list: List<String>): List<String> { return movieDao.getMovieByIds(list) }
 }
