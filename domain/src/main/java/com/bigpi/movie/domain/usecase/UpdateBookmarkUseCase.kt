@@ -6,7 +6,6 @@ import com.bigpi.movie.domain.model.remote.MovieItem
 import com.bigpi.movie.domain.repository.MovieRepository
 import javax.inject.Inject
 
-
 class UpdateBookmarkUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
