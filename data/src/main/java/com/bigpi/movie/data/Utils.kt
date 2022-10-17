@@ -23,7 +23,7 @@ suspend inline fun <T> getRemoteResult(crossinline call: suspend () -> Response<
             val body = response.body()
             if (body != null) return Resource.Success(body)
         }
-        return error(ApiFailure(msg = "${response.code()} ${response.message()}"))
+        return error(ApiFailure(msg = "Failed to load data."))
     } catch (e: Exception) {
         return error(ApiFailure(e.message ?: e.toString()))
     }

@@ -1,13 +1,13 @@
 package com.bigpi.movie.data.model.remote
 
 import android.os.Parcelable
-import com.bigpi.movie.data.model.local.MovieEntity
-import com.bigpi.movie.domain.model.remote.Movie
-import com.bigpi.movie.domain.model.remote.MovieList
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 data class MovieListResponse(
+    @SerializedName("total") val total: Long,
+    @SerializedName("start") val start: Int,
+    @SerializedName("display") val display: Int,
     @SerializedName("items") val movieList: List<MovieResponse> = listOf()
 )
 
@@ -25,51 +25,3 @@ data class MovieResponse(
     val bookmark: Boolean = false
 ) : Parcelable
 
-fun MovieListResponse.mapToDomain(): MovieList {
-    return MovieList(
-        movieList = movieList.map { it.mapToDomain() }
-    )
-}
-
-fun MovieResponse.mapToDomain(): Movie {
-    return Movie(
-        title = this.title,
-        link = this.link,
-        image = this.image,
-        subtitle = this.subtitle,
-        pubDate = this.pubDate,
-        director = this.director,
-        actor = this.actor,
-        userRating = this.userRating,
-        bookmark = this.bookmark
-    )
-}
-
-fun Movie.mapToData(): MovieResponse {
-    return MovieResponse(
-        title = this.title,
-        link = this.link,
-        image = this.image,
-        subtitle = this.subtitle,
-        pubDate = this.pubDate,
-        director = this.director,
-        actor = this.actor,
-        userRating = this.userRating,
-        bookmark = this.bookmark
-    )
-}
-
-fun MovieResponse.mapToEntity(): MovieEntity {
-    return MovieEntity(
-        id = null,
-        title = this.title,
-        link = this.link,
-        image = this.image,
-        subtitle = this.subtitle,
-        pubDate = this.pubDate,
-        director = this.director,
-        actor = this.actor,
-        userRating = this.userRating,
-        bookmark = this.bookmark
-    )
-}

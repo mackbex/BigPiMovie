@@ -13,6 +13,11 @@
             name="viewModel"
             type="com.bigpi.movie.ui.main.MovieViewModel" />
 
+
+        <variable
+            name="adapter"
+            type="com.bigpi.movie.ui.main.MovieListAdapter" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -70,6 +75,10 @@
             android:id="@+id/rc_movies"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:dividerColor="@{@color/grey_02}"
+            app:dividerHeight="@{@dimen/height_1}"
+            app:dividerPadding="@{@dimen/padding_0}"
+            app:setAdapter="@{adapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_movie_title"

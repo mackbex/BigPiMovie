@@ -1,11 +1,11 @@
 package com.bigpi.movie.domain.repository
 
-import androidx.paging.PagingData
+import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.Movie
-import kotlinx.coroutines.flow.Flow
+import com.bigpi.movie.domain.model.remote.MovieItem
 
 interface MovieRepository {
-    suspend fun getMovieList(query: String): Flow<PagingData<Movie>>
-//    suspend fun addBookmark(id: String): Resource<Long>
-//    suspend fun removeBookmark(id: String): Resource<Int>
+    suspend fun fetchMovie(query: String, display: Int, start: Int): Resource<Movie>
+    suspend fun addBookmark(movieItem: MovieItem): Resource<Long>
+    suspend fun removeBookmark(movieItem: MovieItem): Resource<Int>
 }

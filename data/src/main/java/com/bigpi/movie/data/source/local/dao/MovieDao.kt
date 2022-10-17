@@ -11,20 +11,12 @@ import com.bigpi.movie.data.model.local.MovieEntity
 interface MovieDao {
 
     @Query("SELECT id FROM movie WHERE id IN (:ids)")
-    suspend fun getMovieByIds(ids: List<Int>): List<Int>
+    suspend fun getMovieByIds(ids: List<String>): List<String>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMovie(movie: MovieEntity): Long
+    suspend fun addBookmark(movieEntity: MovieEntity): Long
 
     @Query("DELETE FROM movie WHERE id = :id")
-    suspend fun deleteMovieById(id: String): Int
+    suspend fun removeBookmark(id: String): Int
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(list : List<MovieEntity>)
-
-    @Query("DELETE FROM movie")
-    fun deleteAll()
-
-    @Query("SELECT * FROM movie WHERE id LIKE :query")
-    fun pagingSource(query: String): PagingSource<Int, MovieEntity>
 }
