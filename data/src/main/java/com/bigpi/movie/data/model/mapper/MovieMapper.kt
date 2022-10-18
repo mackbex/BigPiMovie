@@ -1,12 +1,11 @@
 package com.bigpi.movie.data.model.mapper
 
 import com.bigpi.movie.data.model.local.MovieEntity
-import com.bigpi.movie.data.model.remote.MovieListResponse
-import com.bigpi.movie.data.model.remote.MovieResponse
+import com.bigpi.movie.data.model.remote.MovieItemResponse
 import com.bigpi.movie.domain.model.remote.MovieItem
 import com.bigpi.movie.domain.model.remote.Movie
 
-fun MovieResponse.mapToDomain(): MovieItem {
+fun MovieItemResponse.mapToDomain(): MovieItem {
     return MovieItem(
         title = this.title,
         link = this.link,
@@ -20,8 +19,8 @@ fun MovieResponse.mapToDomain(): MovieItem {
     )
 }
 
-fun MovieItem.mapToData(): MovieResponse {
-    return MovieResponse(
+fun MovieItem.mapToData(): MovieItemResponse {
+    return MovieItemResponse(
         title = this.title,
         link = this.link,
         image = this.image,
@@ -49,7 +48,7 @@ fun MovieItem.mapToEntity(): MovieEntity {
     )
 }
 
-fun MovieListResponse.mapToDomain(): Movie {
+fun com.bigpi.movie.data.model.remote.MovieResponse.mapToDomain(): Movie {
     return Movie(
         total = this.total,
         display = this.display,

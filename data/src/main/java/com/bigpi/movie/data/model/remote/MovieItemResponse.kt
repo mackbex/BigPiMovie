@@ -4,15 +4,15 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-data class MovieListResponse(
+data class MovieResponse(
     @SerializedName("total") val total: Long,
     @SerializedName("start") val start: Int,
     @SerializedName("display") val display: Int,
-    @SerializedName("items") val movieList: List<MovieResponse> = listOf()
+    @SerializedName("items") val movieList: List<MovieItemResponse> = listOf()
 )
 
 @Parcelize
-data class MovieResponse(
+data class MovieItemResponse(
     val id: Int? = null,
     @SerializedName("title") val title: String? = null,
     @SerializedName("link") val link: String? = null,

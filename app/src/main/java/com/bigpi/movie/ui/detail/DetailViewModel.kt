@@ -3,7 +3,7 @@ package com.bigpi.movie.ui.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bigpi.movie.data.model.remote.MovieResponse
+import com.bigpi.movie.data.model.remote.MovieItemResponse
 import com.bigpi.movie.data.model.mapper.mapToDomain
 import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.MovieItem
@@ -31,7 +31,7 @@ class DetailViewModel @Inject constructor(
 
 
     init {
-        _movieState.value = savedStateHandle.get<MovieResponse>("movie")?.mapToDomain()
+        _movieState.value = savedStateHandle.get<MovieItemResponse>("movie")?.mapToDomain()
 
     }
 
