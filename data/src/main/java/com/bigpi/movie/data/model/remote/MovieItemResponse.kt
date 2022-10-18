@@ -13,7 +13,6 @@ data class MovieResponse(
 
 @Parcelize
 data class MovieItemResponse(
-    val id: Int? = null,
     @SerializedName("title") val title: String? = null,
     @SerializedName("link") val link: String? = null,
     @SerializedName("image") val image: String? = null,

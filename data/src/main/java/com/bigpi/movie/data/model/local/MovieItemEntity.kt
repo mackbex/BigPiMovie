@@ -3,8 +3,8 @@ package com.bigpi.movie.data.model.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "movie")
-data class MovieEntity(
+@Entity(tableName = "movie_item")
+data class MovieItemEntity(
     @PrimaryKey
     val id: String,
     val title: String? = null,

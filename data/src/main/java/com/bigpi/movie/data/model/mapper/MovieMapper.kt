@@ -1,6 +1,6 @@
 package com.bigpi.movie.data.model.mapper
 
-import com.bigpi.movie.data.model.local.MovieEntity
+import com.bigpi.movie.data.model.local.MovieItemEntity
 import com.bigpi.movie.data.model.remote.MovieItemResponse
 import com.bigpi.movie.domain.model.remote.MovieItem
 import com.bigpi.movie.domain.model.remote.Movie
@@ -33,8 +33,8 @@ fun MovieItem.mapToData(): MovieItemResponse {
     )
 }
 
-fun MovieItem.mapToEntity(): MovieEntity {
-    return MovieEntity(
+fun MovieItem.mapToEntity(): MovieItemEntity {
+    return MovieItemEntity(
         id = this.link ?: "",
         title = this.title,
         link = this.link,
