@@ -31,7 +31,7 @@
 > - Resource라는 sealed 클래스(성공, 실패, 로딩 상태 에 따른 conditional result.)로 결과 값을 감싸 StateFlow으로 전달합니다.
 > - StateFlow와 DataBinding을 통해 화면을 구성합니다.
 > - 도메인과 데이터, 프레젠터 영역들간의 model 변환을 위한 mapper도 모듈에 포함되어 있습니다.
-> - 만약 네트워크나 기타 사유로 데이터 호출이 실패하는 경우, 
+> - 만약 네트워크나 기타 사유로 데이터 호출이 실패하는 경우, <br/>
 > <img src="https://user-images.githubusercontent.com/5334962/196431979-0dcd287d-bceb-49b2-b387-0f3577a289c8.png" width="300" /> <br/>
 > 위와같이 실패 ui가 최하단에 표기되며, retry를 누를 시 마지막 성공한 영화 리스트부터 fetch를 진행합니다.
 
