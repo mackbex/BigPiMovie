@@ -1,4 +1,4 @@
-package com.bigpi.movie.data.source.local.dao
+package com.bigpi.movie.data.api.local
 
 import androidx.room.Dao
 import androidx.room.Insert

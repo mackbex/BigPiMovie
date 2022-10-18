@@ -2,7 +2,7 @@ package com.bigpi.movie.data.module
 
 import android.content.Context
 import com.bigpi.movie.data.source.local.AppDatabase
-import com.bigpi.movie.data.source.local.dao.MovieDao
+import com.bigpi.movie.data.api.local.MovieDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

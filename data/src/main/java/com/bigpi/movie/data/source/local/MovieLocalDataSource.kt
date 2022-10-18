@@ -3,7 +3,7 @@ package com.bigpi.movie.data.source.local
 import com.bigpi.movie.data.getDeleteResult
 import com.bigpi.movie.data.getInsertResult
 import com.bigpi.movie.data.model.local.MovieEntity
-import com.bigpi.movie.data.source.local.dao.MovieDao
+import com.bigpi.movie.data.api.local.MovieDao
 import javax.inject.Inject
 
 
