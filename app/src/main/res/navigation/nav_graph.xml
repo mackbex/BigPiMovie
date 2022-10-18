@@ -22,6 +22,6 @@
         tools:layout="@layout/fragment_detail">
         <argument
             android:name="movie"
-            app:argType="com.bigpi.movie.data.model.remote.MovieResponse" />
+            app:argType="com.bigpi.movie.data.model.remote.MovieItemResponse" />
     </fragment>
 </navigation>
