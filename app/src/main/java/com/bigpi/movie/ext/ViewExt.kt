@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bigpi.movie.R
-import com.bigpi.movie.common.PagingLoadStateAdapter
 import com.bigpi.movie.util.RecyclerViewDecoration
 
 @BindingAdapter("paddingFirstItemHeight", "dividerHeight", "dividerPadding", "dividerColor", requireAll = false)
@@ -52,12 +51,6 @@ inline fun <reified T: ViewDataBinding> getDataBinding(parent: ViewGroup, id: In
         LayoutInflater.from(parent.context), id, parent, false
     )
 
-fun <T : Any, VH : RecyclerView.ViewHolder> PagingDataAdapter<T, VH>.loadFooter(): ConcatAdapter {
-
-    return this.withLoadStateFooter(
-        footer = PagingLoadStateAdapter(this)
-    )
-}
 
 @BindingAdapter("setAdapter")
 fun <T,VH : RecyclerView.ViewHolder> RecyclerView.setAdapter(
