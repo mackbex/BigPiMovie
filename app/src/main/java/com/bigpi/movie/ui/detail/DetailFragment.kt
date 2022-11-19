@@ -73,7 +73,6 @@ class DetailFragment : Fragment() {
                             is Resource.Success -> {
                                 viewModel.updateMovieModel(it.data)
                             }
-                            is Resource.Loading -> {}
                             is Resource.Failure -> {
                                 Toast.makeText(requireContext(), it.apiFailure.msg, Toast.LENGTH_SHORT).show()
                             }

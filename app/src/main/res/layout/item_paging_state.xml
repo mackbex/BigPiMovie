@@ -4,10 +4,10 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.bigpi.movie.domain.Resource" />
+        <import type="com.bigpi.movie.ui.main.model.MovieListUi.PagingStateUi.PagingState" />
         <variable
             name="state"
-            type="com.bigpi.movie.domain.Resource" />
+            type="com.bigpi.movie.ui.main.model.MovieListUi.PagingStateUi.PagingState" />
     </data>
 
 
@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/grey_04"
-            android:visibility="@{state instanceof Resource.Failure ? View.VISIBLE : View.GONE}"
+            android:visibility="@{state == PagingState.Failure ? View.VISIBLE : View.GONE}"
             android:text="@string/err_failed_load_data" />
 
         <ProgressBar
@@ -34,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="@{state instanceof Resource.Loading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{state == PagingState.Loading ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
@@ -49,7 +49,7 @@
             app:backgroundTint="@color/grey_04"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="@{state instanceof Resource.Failure ? View.VISIBLE : View.GONE}"
+            android:visibility="@{state == PagingState.Failure ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

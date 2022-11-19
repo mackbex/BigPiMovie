@@ -12,30 +12,32 @@ import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.ApiFailure
 import com.bigpi.movie.domain.model.remote.MovieItem
 import com.bigpi.movie.ext.getDataBinding
-import com.bigpi.movie.ui.main.model.MoviePresentation
+import com.bigpi.movie.ui.main.model.MovieListUi
+import com.bigpi.movie.ui.main.model.MovieUiState
 import com.bigpi.movie.ui.main.model.mapper.mapToDomain
 
 
-class MovieListAdapter: ListAdapter<MoviePresentation, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+class MovieListAdapter: ListAdapter<MovieListUi, MovieListAdapter.MovieModelViewHolder<MovieListUi>>(ItemDiffCallback()) {
     private var movieAdapterListener: ((movie: MovieItem, binding: ItemMovieBinding) -> Unit)? = null
     private var loadingStateListener: ((binding: ItemPagingStateBinding) -> Unit)? = null
-    private val dataList = mutableListOf<MoviePresentation>()
+    private val dataList = mutableListOf<MovieListUi>()
 
-    abstract class MovieModelViewHolder(binding: ViewDataBinding) :
+    abstract class MovieModelViewHolder<ITEM: MovieListUi>(binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        abstract fun bind(model: MoviePresentation)
+        abstract fun bind(model: ITEM)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    @Suppress("UNCHECKED_CAST")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieModelViewHolder<MovieListUi> {
         return when(viewType) {
-            MoviePresentation.Type.MovieItem.ordinal -> MovieViewHolder(getDataBinding(parent, R.layout.item_movie))
-            MoviePresentation.Type.PagingState.ordinal -> PagingStateViewHolder(getDataBinding(parent, R.layout.item_paging_state))
+            MovieListUi.Type.MovieItem.ordinal -> MovieViewHolder(getDataBinding(parent, R.layout.item_movie))
+            MovieListUi.Type.PagingState.ordinal -> PagingStateViewHolder(getDataBinding(parent, R.layout.item_paging_state))
             else -> throw UnsupportedOperationException("Unknown view")
-        }
+        } as MovieModelViewHolder<MovieListUi>
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        getItem(position)?.let { (holder as MovieModelViewHolder).bind(it) }
+    override fun onBindViewHolder(holder: MovieModelViewHolder<MovieListUi>, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -50,16 +52,16 @@ class MovieListAdapter: ListAdapter<MoviePresentation, RecyclerView.ViewHolder>(
         this.loadingStateListener = listener
     }
 
-    fun updateBookmarkItem(movie: MoviePresentation.MovieItemPresent) {
+    fun updateBookmarkItem(movieItem: MovieListUi.MovieItemUi) {
         dataList
             .indexOfFirst {
-                val oldItem = (it as? MoviePresentation.MovieItemPresent)
+                val oldItem = (it as? MovieListUi.MovieItemUi)
                 oldItem?.let { old ->
-                    if(old == movie) {
+                    if(old == movieItem) {
                         false
                     }
                     else {
-                        old.link == movie.link
+                        old.link == movieItem.link
                     }
                 } ?: kotlin.run {
                     false
@@ -67,44 +69,39 @@ class MovieListAdapter: ListAdapter<MoviePresentation, RecyclerView.ViewHolder>(
             }
             .takeIf { it > -1 }
             ?.run {
-            dataList[this] = movie
+            dataList[this] = movieItem
             notifyItemChanged(this)
         }
     }
 
-    fun setLoadingState(state: Resource<Any>){
+    fun setLoadingState(state: MovieUiState){
         dataList
             .indexOfFirst {
-                it is MoviePresentation.PagingStatePresent
+                it is MovieListUi.PagingStateUi
             }
             .takeIf { it > -1 }
             ?.run {
-                dataList[this] = MoviePresentation.PagingStatePresent(
-                    when (state) {
-                        is Resource.Success -> {
-                            Resource.Success(null)
-                        }
-                        is Resource.Loading -> {
-                            Resource.Loading
-                        }
-                        is Resource.Failure -> {
-                            Resource.Failure(ApiFailure())
-                        }
+                dataList[this] = MovieListUi.PagingStateUi(
+                    state = if(state.isLoading) {
+                        MovieListUi.PagingStateUi.PagingState.Loading
+                    }
+                    else {
+                        MovieListUi.PagingStateUi.PagingState.Loading
                     }
                 )
                 notifyItemChanged(this)
             }
     }
 
-    fun submitMovieItems(movie: MoviePresentation.MoviePresent) {
-        val movieList = movie.movieList
-        if(dataList.containsAll(movieList)) {
+    fun submitMovieItems(movie: List<MovieListUi.MovieItemUi>, hasMoreLoads: Boolean) {
+
+        if(dataList.containsAll(movie)) {
             return
         }
 
         dataList
             .indexOfFirst {
-                it is MoviePresentation.PagingStatePresent
+                it is MovieListUi.PagingStateUi
             }
             .takeIf { it > -1 }
             ?.run {
@@ -112,12 +109,10 @@ class MovieListAdapter: ListAdapter<MoviePresentation, RecyclerView.ViewHolder>(
                 notifyItemRemoved(this)
             }
 
-        movie.run {
-            dataList.addAll(movie.movieList)
-        }
+        dataList.addAll(movie)
 
-        if(movie.hasMoreLoads) {
-            dataList.add(MoviePresentation.PagingStatePresent(state = Resource.Loading))
+        if(hasMoreLoads) {
+            dataList.add(MovieListUi.PagingStateUi())
         }
 
         super.submitList(dataList)
@@ -129,47 +124,45 @@ class MovieListAdapter: ListAdapter<MoviePresentation, RecyclerView.ViewHolder>(
     }
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
-        MovieModelViewHolder(binding) {
+        MovieModelViewHolder<MovieListUi.MovieItemUi>(binding) {
 
-        override fun bind(model: MoviePresentation) {
-            (model as? MoviePresentation.MovieItemPresent)?.mapToDomain()?.run {
-                binding.movieItem = this
-                movieAdapterListener?.invoke(this, binding)
-            }
+        override fun bind(model: MovieListUi.MovieItemUi) {
+                binding.movieItem = model.mapToDomain()
+                movieAdapterListener?.invoke(model.mapToDomain(), binding)
+
             binding.executePendingBindings()
         }
     }
 
     inner class PagingStateViewHolder(private val binding: ItemPagingStateBinding) :
-        MovieModelViewHolder(binding) {
-        override fun bind(model: MoviePresentation) {
-            (model as? MoviePresentation.PagingStatePresent)?.run {
-                binding.state = state
-            }
+        MovieModelViewHolder<MovieListUi.PagingStateUi>(binding) {
+        override fun bind(model: MovieListUi.PagingStateUi) {
+                binding.state = model.state
+
             binding.btnRetry.setOnClickListener {
-                binding.state = Resource.Loading
+                binding.state = MovieListUi.PagingStateUi.PagingState.Loading
                 loadingStateListener?.invoke(binding)
             }
             binding.executePendingBindings()
         }
     }
 
-    private class ItemDiffCallback: DiffUtil.ItemCallback<MoviePresentation>() {
-        override fun areItemsTheSame(oldItem: MoviePresentation, newItem: MoviePresentation): Boolean {
+    private class ItemDiffCallback: DiffUtil.ItemCallback<MovieListUi>() {
+        override fun areItemsTheSame(oldItem: MovieListUi, newItem: MovieListUi): Boolean {
 
-            val movieDiff = oldItem is MoviePresentation.MovieItemPresent
-                    && newItem is MoviePresentation.MovieItemPresent
+            val movieDiff = oldItem is MovieListUi.MovieItemUi
+                    && newItem is MovieListUi.MovieItemUi
                     && oldItem.title == newItem.title
                     && oldItem.bookmark == newItem.bookmark
 
-            val separatorDiff = oldItem is MoviePresentation.PagingStatePresent
-                    && newItem is MoviePresentation.PagingStatePresent
+            val separatorDiff = oldItem is MovieListUi.PagingStateUi
+                    && newItem is MovieListUi.PagingStateUi
                     && oldItem == newItem
 
             return movieDiff || separatorDiff
         }
 
-        override fun areContentsTheSame(oldItem: MoviePresentation, newItem: MoviePresentation): Boolean {
+        override fun areContentsTheSame(oldItem: MovieListUi, newItem: MovieListUi): Boolean {
             return oldItem == newItem
         }
     }

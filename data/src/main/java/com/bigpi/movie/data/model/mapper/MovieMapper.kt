@@ -53,6 +53,6 @@ fun com.bigpi.movie.data.model.remote.MovieResponse.mapToDomain(): Movie {
         total = this.total,
         display = this.display,
         start = this.start,
-        movieList = movieList.map { it.mapToDomain() }
+        movieItemList = movieList.map { it.mapToDomain() }
     )
 }
