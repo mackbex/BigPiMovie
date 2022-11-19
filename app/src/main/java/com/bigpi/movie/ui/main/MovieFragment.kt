@@ -10,9 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bigpi.movie.R
 import com.bigpi.movie.data.model.mapper.mapToData
@@ -21,24 +18,28 @@ import com.bigpi.movie.domain.Resource
 import com.bigpi.movie.domain.model.remote.MovieItem
 import com.bigpi.movie.ui.BigPiConstants
 import com.bigpi.movie.ui.detail.DetailFragmentArgs
-import com.bigpi.movie.ui.main.model.MoviePresentation
+import com.bigpi.movie.ui.main.model.MovieListUi
 import com.bigpi.movie.ui.main.model.mapper.mapToPresent
 import com.bigpi.movie.util.InfiniteScrollListener
 import com.bigpi.movie.util.autoCleared
 import com.bigpi.movie.util.hideSoftInput
+import com.bigpi.movie.util.launchAndCollectIn
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MovieFragment : Fragment() {
 
     private var binding: FragmentMovieBinding by autoCleared()
     private val viewModel: MovieViewModel by viewModels()
-    val movieListAdapter: MovieListAdapter by lazy { MovieListAdapter() }
+    private val movieListAdapter: MovieListAdapter by lazy { MovieListAdapter() }
 
     companion object {
         const val START_INDEX = 1
         const val PAGE_SIZE = 10
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -79,41 +80,38 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener(BigPiConstants.KEY_DETAIL_MOVIE) { _, result ->
-            result.getParcelable<MoviePresentation.MovieItemPresent>(BigPiConstants.KEY_MOVIE_ITEM)?.let {
+            result.getParcelable<MovieListUi.MovieItemUi>(BigPiConstants.KEY_MOVIE_ITEM)?.let {
                 movieListAdapter.updateBookmarkItem(it)
             }
         }
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.searchMovieState.collect {
-                        when(it) {
-                            is Resource.Success -> {
-                                movieListAdapter.submitMovieItems(it.data)
-                            }
-                            is Resource.Failure -> {
-                                movieListAdapter.setLoadingState(it)
-                                Toast.makeText(requireContext(), it.apiFailure.msg, Toast.LENGTH_SHORT).show()
-                            }
-                            is Resource.Loading -> {}
-                        }
-                    }
+        viewModel.searchMovieState.launchAndCollectIn(viewLifecycleOwner) { state ->
+
+            if(!state.isLoading) {
+                state.movie?.let { movie ->
+                    movieListAdapter.submitMovieItems(movie.movieItemList.map {
+                        it.mapToPresent()
+                    }, movie.hasMoreLoads)
                 }
-                launch {
-                    viewModel.bookmarkState.collect {
-                        when(it) {
-                            is Resource.Success -> {
-                                movieListAdapter.updateBookmarkItem(it.data.mapToPresent())
-                            }
-                            is Resource.Failure -> {
-                                Toast.makeText(requireContext(), it.apiFailure.msg, Toast.LENGTH_SHORT).show()
-                            }
-                            is Resource.Loading -> {}
-                        }
-                    }
+
+                state.userMessage?.let { msg ->
+                    Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
+                    viewModel.userMessageShown()
+                }
+            }
+
+            movieListAdapter.setLoadingState(state)
+        }
+
+        viewModel.bookmarkState.launchAndCollectIn(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    movieListAdapter.updateBookmarkItem(it.data.mapToPresent())
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), it.apiFailure.msg, Toast.LENGTH_SHORT).show()
                 }
             }
         }

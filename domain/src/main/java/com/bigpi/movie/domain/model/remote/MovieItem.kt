@@ -5,7 +5,7 @@ data class Movie(
     val display: Int,
     val start: Int,
     val hasMoreLoads: Boolean = (total - (display + start) > 0),
-    val movieList: List<MovieItem> = listOf()
+    val movieItemList: List<MovieItem> = listOf()
 ) {
     fun copy(movieList: List<MovieItem>) = Movie(total, display, start, hasMoreLoads, movieList)
 }

@@ -12,7 +12,6 @@ inline fun <reified T: Any, reified R: Any> Resource<T>.map(transform: (T) -> R)
             Resource.Failure(ApiFailure(msg = e.message))
         }
         is Resource.Failure -> Resource.Failure(this.apiFailure)
-        is Resource.Loading -> Resource.Loading
     }
 }
 

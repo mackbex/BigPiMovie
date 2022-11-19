@@ -21,7 +21,6 @@
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.BigPi.NoActionBar"
-            tools:ignore="LockedOrientationActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

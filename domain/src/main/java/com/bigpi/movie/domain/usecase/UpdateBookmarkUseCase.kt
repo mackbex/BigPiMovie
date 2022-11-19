@@ -24,9 +24,6 @@ class UpdateBookmarkUseCase @Inject constructor(
                     is Resource.Failure -> {
                         result
                     }
-                    is Resource.Loading -> {
-                        result
-                    }
                 }
 
             }
@@ -41,9 +38,6 @@ class UpdateBookmarkUseCase @Inject constructor(
                         }
                     }
                     is Resource.Failure -> {
-                        result
-                    }
-                    is Resource.Loading -> {
                         result
                     }
                 }
